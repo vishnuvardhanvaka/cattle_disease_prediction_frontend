@@ -37,12 +37,10 @@ export default function Home() {
     const [symptomsList, setSymptomsList] = useState([])
     const [disease,setDisease]=useState('')
 
-    let ll=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1]
+    // let ll=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1]
             
     async function predict(symptoms: any) {
         try {
-            console.log(typeof(JSON.stringify({ symptoms })))
-            let ll=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1]
             const form = new FormData()
             form.append('symptoms',JSON.stringify({ symptoms }))
             const response = await fetch('http://127.0.0.1:8000/getDisease', {
@@ -55,7 +53,7 @@ export default function Home() {
             }
 
             const data = await response.json();
-            console.log(data,'***************')
+            // console.log(data,'***************')
             if(data.success==true){
 
                 setDisease(data.disease)
@@ -66,6 +64,7 @@ export default function Home() {
             setLoading(false)
             return data; // Return the prediction data
         } catch (error) {
+            setLoading(false)
             console.error('Error predicting:', error);
             throw error; // Throw the error for handling in the calling code
         }
@@ -142,7 +141,7 @@ export default function Home() {
                 <textarea
                     onChange={(e) => { setCattleDetails(e.target.value) }}
                     value={cattleDetails}
-                    placeholder="Describe the problems or symptoms that your cattle is facing."
+                    placeholder={`Describe the problems or symptoms that your cattle is facing.\neg: The cattle refuses to put weight on its foot, which is swollen and has a foul odor. The claws are also separated. These signs suggest a serious foot infection`}
                     className=" w-full lg:w-full max-h-72 min-h-40 mx-4 h-64 bg-gray-700 rounded-lg py-3 px-2 pl-4 border-gray-600 placeholder-gray-300 focus:placeholder-gray-500  bg:border-transparent text-gray-100 focus:outline-none"
                 />
                 <button
